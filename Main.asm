@@ -123,7 +123,7 @@ CheckG	ADD R4,R3,#-2		;Anytime G pops up, R3 must be 2 otherwise clear R3
 
 
 ;Stop Codon code (R5=1)
-Stop	AND R1,R1,#0
+Stop	AND R1,R1,#0		;Code from this point on is stop codon-related
 	ST R1, astr
 	ST R1, ustr
 	ST R1, gstr
@@ -141,13 +141,13 @@ Stop	AND R1,R1,#0
 	BRz ChckC
 	BRnzp loop
 
-ChckC	AND R3,R3,#0
+ChckC	AND R3,R3,#0		;Checks if character inputed is a C
 	ST R3, astr
 	ST R3, ustr
 	ST R3, gstr
 	BRnzp loop
 
-ChckU	LD R2, ustr
+ChckU	LD R2, ustr		;Checks if character inputed is a U
 	NOT R2,R2
 	ADD R2,R2,#1
 	ADD R2,R0,R2
@@ -157,7 +157,7 @@ ChckU	LD R2, ustr
 	ADD R3,R3,#1
 Leave6	ST R0, ustr
 	BRnzp loop
-Dupu2	ADD R4,R3,#-2
+Dupu2	ADD R4,R3,#-2		;Any code that starts with Dupu is for duplicate cases
 	BRz Upd5
 	ADD R4,R3,#-1
 	BRz Leave6 
@@ -168,7 +168,7 @@ Upd5	ADD R3,R3,#-1
 Upd6	ADD R3,R3,#-1
 	BRnzp loop
 
-ChckG	LD R2, gstr
+ChckG	LD R2, gstr		;Checks if character inputed is a G
 	NOT R2,R2
 	ADD R2,R2,#1
 	ADD R2,R0,R2
@@ -194,7 +194,7 @@ Clear	ADD R4,R3,#-1
 	BRnzp loop
  
 
-ChckA	LD R2, astr
+ChckA	LD R2, astr		;Checks if character inputed is an A
 	NOT R2,R2
 	ADD R2,R2,#1
 	ADD R2,R0,R2
@@ -214,7 +214,7 @@ Dupu3	ADD R4,R3,#-2
 Upd3	ADD R3,R3,#1
 	BRnzp loop	
 
-Done	TRAP x25
+Done	TRAP x25	;Halts the system
 pipe	.FILL x7C	;ASCII value of pipe symbol
 astr	.BLKW 1		;astr has an A in it if there is a repeated a typed
 ustr	.BLKW 1		;ustr has a U in it if there is a repeated u typed
