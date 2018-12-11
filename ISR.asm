@@ -13,13 +13,13 @@
 ;R0 holds char typed
 	.ORIG x2600
 	LDI R0, KBDR	;R0 has ASCII val of char
-	LD R1, a
+	LD R1, a	;R1 has negative ASCII value of capital a
+	ADD R2,R1,R0	;if character typed equals a, then branch to valid
+	BRz Valid
+	LD R1, c	;R1 has negative ASCII value of capital c
 	ADD R2,R1,R0
 	BRz Valid
-	LD R1, c
-	ADD R2,R1,R0
-	BRz Valid
-	LD R1, u
+	LD R1, u	;R1 has negative ASCII value of capital u, etc.
 	ADD R2,R1,R0
 	BRz Valid
 	LD R1, g
