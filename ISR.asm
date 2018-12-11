@@ -28,10 +28,10 @@
 	BRnp Done
 Valid	STI R0, buff
 Done	RTI
-buff	.FILL x4600
-a	.FILL x-41
-c	.FILL x-43
-u	.FILL x-55
-g	.FILL x-47
-KBDR	.FILL xFE02
+buff	.FILL x4600	;buff will be global variable for both ISR and Main to use together
+a	.FILL x-41	;a holds -ascii of 'A'
+c	.FILL x-43	;c holds -ascii of 'C'
+u	.FILL x-55	;u holds -ascii of 'U'
+g	.FILL x-47	;g holds -ascii of 'G'
+KBDR	.FILL xFE02	;Data register for kb input
 	.END
