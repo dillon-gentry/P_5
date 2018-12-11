@@ -215,18 +215,18 @@ Upd3	ADD R3,R3,#1
 	BRnzp loop	
 
 Done	TRAP x25
-pipe	.FILL x7C
-astr	.BLKW 1
-ustr	.BLKW 1
-gstr	.BLKW 1
-ach	.FILL x-41
-uch	.FILL x-55
-gch	.FILL x-47
-cch	.FILL x-43
-Stack	.FILL x4000
-ISR	.FILL x2600
-KBIVE	.FILL x0180
-KBSR	.FILL xFE00
+pipe	.FILL x7C	;ASCII value of pipe symbol
+astr	.BLKW 1		;astr has an A in it if there is a repeated a typed
+ustr	.BLKW 1		;ustr has a U in it if there is a repeated u typed
+gstr	.BLKW 1		;gstr has a G in it if there is a repeated g typed
+ach	.FILL x-41	;negative ASCII value of capital A
+uch	.FILL x-55	;negative ASCII value of capital U
+gch	.FILL x-47	;negative ASCII value of capital G
+cch	.FILL x-43	;negative ASCII value of capital C
+Stack	.FILL x4000	;location of stack
+ISR	.FILL x2600	;location of ISR instructions
+KBIVE	.FILL x0180	;location of keyboard interrupt vector table
+KBSR	.FILL xFE00	;location of keyboard status register
 KBIEN	.FILL x4000
 Buffer	.FILL x4600
 
