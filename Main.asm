@@ -58,7 +58,7 @@ loop	LDI R0, Buffer
 	AND R1,R1,#0
 	STI R1, Buffer
 ;Process R0?
-;Start Codon code (R5=0)
+;Start Codon code (R5=0)	;This section will only look for AUG
 Check5	ADD R5,R5,#0
 	BRnp Stop
 	LD R1, ach
@@ -75,13 +75,13 @@ Check5	ADD R5,R5,#0
 	BRz CheckC
 	BRnzp loop
 
-CheckC	AND R3,R3,#0
+CheckC	AND R3,R3,#0		;C doesn't matter in this section
 	ST R3, astr
 	ST R3, ustr
 	BRnzp loop
 
 
-CheckA	AND R2,R2,0
+CheckA	AND R2,R2,0		;Anytime A pops up, set R3 to 1
 	ST R2, ustr
 	LD R2, astr
 	NOT R2,R2
@@ -91,31 +91,31 @@ CheckA	AND R2,R2,0
 	ADD R3,R3,#1
 Leave	ST R0, astr
 Leave2	BRnzp loop
-Dup	ADD R4,R3,#-1
+Dup	ADD R4,R3,#-1		;Deals with multiple A's
 	BRz Leave 
 	ADD R3,R3,#1
 	BRnzp Leave2
 	
-CheckU	LD R2, ustr
-	NOT R2,R2
+CheckU	LD R2, ustr		;Anytime U pops up, R3 must equal 1
+	NOT R2,R2		;in order to advance
 	ADD R2,R2,#1
 	ADD R2,R0,R2
 	BRz Dupu	
 	ADD R3,R3,#1
 Leave3	ST R0, ustr
 	BRnzp loop
-Dupu	ADD R4,R3,#-2
+Dupu	ADD R4,R3,#-2		;Deals with multiple U's
 	BRz Clr
 	ADD R4,R3,#-1
 	BRz Upd
-Clr	AND R3,R3,#0
+Clr	AND R3,R3,#0		;When U pops up and R3 not equal to 1
 	BRnzp Leave3
-Upd	ADD R3,R3,#1
+Upd	ADD R3,R3,#1		;When U pops up and R3 equal to 1
 	BRnzp loop
 
-CheckG	ADD R4,R3,#-2
+CheckG	ADD R4,R3,#-2		;Anytime G pops up, R3 must be 2 otherwise clear R3
 	BRnp loop
-	LD R0, pipe
+	LD R0, pipe		;Prints pipe when R3 equal 2
 	TRAP x21
 	ADD R5,R5,#1
 	AND R3,R3,0
@@ -215,17 +215,17 @@ Upd3	ADD R3,R3,#1
 	BRnzp loop	
 
 Done	TRAP x25
-pipe	.FILL x7C 	;ASCII value of pipe character
-astr	.BLKW 1		;stores an A inside if there is a repeated a
-ustr	.BLKW 1		;stores a U inside if there is a repeated u
-gstr	.BLKW 1		;stores a G inside if there is a repeated g
-ach	.FILL x-41	;negative ASCII value of A
-uch	.FILL x-55	;negative ASCII value of U
-gch	.FILL x-47	;negative ASCII value of G
-cch	.FILL x-43	;negative ASCII value of C
-Stack	.FILL x4000	;location of stack
-ISR	.FILL x2600	;location of ISR instructions
-KBIVE	.FILL x0180	;location of keyboard interrupt vector table
+pipe	.FILL x7C
+astr	.BLKW 1
+ustr	.BLKW 1
+gstr	.BLKW 1
+ach	.FILL x-41
+uch	.FILL x-55
+gch	.FILL x-47
+cch	.FILL x-43
+Stack	.FILL x4000
+ISR	.FILL x2600
+KBIVE	.FILL x0180
 KBSR	.FILL xFE00
 KBIEN	.FILL x4000
 Buffer	.FILL x4600
